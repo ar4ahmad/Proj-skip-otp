@@ -15,13 +15,19 @@
     background: #f0f0f0;
     min-height: 100vh;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: center;
-    gap: 48px;
-    padding: 40px;
+    gap: 36px;
+    padding: 32px;
   }
 
   /* ─── iPhone Frame ─── */
+  .phone-wrapper {
+    --phone-scale: 1;
+    width: calc(414px * var(--phone-scale));
+    height: calc(896px * var(--phone-scale));
+    flex-shrink: 0;
+  }
   .iphone-frame {
     width: 414px;
     height: 896px;
@@ -34,7 +40,8 @@
       0 0 0 6px #2d2d2d,
       0 0 0 8px #1a1a1a,
       0 20px 60px rgba(0,0,0,0.25);
-    flex-shrink: 0;
+    transform-origin: top left;
+    transform: scale(var(--phone-scale));
   }
 
   /* ─── Status Bar ─── */
@@ -584,6 +591,9 @@
     display: flex;
     flex-direction: column;
     gap: 12px;
+    position: sticky;
+    top: 32px;
+    flex-shrink: 0;
   }
   .controls-panel h3 {
     font-size: 13px;
@@ -594,16 +604,16 @@
     margin-bottom: 4px;
   }
   .controls-panel button {
-    padding: 14px 28px;
+    padding: 12px 20px;
     border-radius: 14px;
     border: 2px solid #e0e0e0;
     background: white;
     cursor: pointer;
-    font: 500 15px/1.2 'Inter', sans-serif;
+    font: 500 14px/1.2 'Inter', sans-serif;
     color: #1d2329;
     transition: all 0.2s ease;
     text-align: left;
-    min-width: 220px;
+    width: 200px;
   }
   .controls-panel button:hover {
     border-color: #c0c0c0;
@@ -629,6 +639,24 @@
 </head>
 <body>
 
+<!-- Controls -->
+<div class="controls-panel">
+  <h3>Prototype Controls</h3>
+  <button class="active" id="btn-state1" onclick="setState(1)">
+    ⏳ Restart
+    <span class="btn-label">Back to initial state</span>
+  </button>
+  <button id="btn-state2" onclick="setState(2)">
+    📲 Send Notification
+    <span class="btn-label">State 1 → State 2</span>
+  </button>
+  <button id="btn-state3" onclick="setState(3)">
+    ✅ Finish Purchase
+    <span class="btn-label">State 2 → State 3</span>
+  </button>
+</div>
+
+<div class="phone-wrapper">
 <div class="iphone-frame" data-state="1">
   <!-- Status Bar -->
   <div class="status-bar">
@@ -816,23 +844,7 @@
   <!-- Home Indicator -->
   <div class="home-indicator"></div>
 </div>
-
-<!-- Controls -->
-<div class="controls-panel">
-  <h3>Prototype Controls</h3>
-  <button class="active" id="btn-state1" onclick="setState(1)">
-    ⏳ Restart
-    <span class="btn-label">Back to initial state</span>
-  </button>
-  <button id="btn-state2" onclick="setState(2)">
-    📲 Send Notification
-    <span class="btn-label">State 1 → State 2</span>
-  </button>
-  <button id="btn-state3" onclick="setState(3)">
-    ✅ Finish Purchase
-    <span class="btn-label">State 2 → State 3</span>
-  </button>
-</div>
+</div><!-- /phone-wrapper -->
 
 <script>
   let currentState = 1;
@@ -843,6 +855,20 @@
     document.querySelectorAll('.controls-panel button').forEach(btn => btn.classList.remove('active'));
     document.getElementById('btn-state' + n).classList.add('active');
   }
+
+  // Responsive scaling based on both height and available width
+  function updateScale() {
+    const padding = 64;
+    const controlsWidth = 220 + 36; // controls + gap
+    const vh = window.innerHeight - padding;
+    const vw = window.innerWidth - padding - controlsWidth;
+    const scaleH = vh / 896;
+    const scaleW = vw / 414;
+    const scale = Math.min(1, scaleH, scaleW);
+    document.querySelector('.phone-wrapper').style.setProperty('--phone-scale', Math.max(0.3, scale));
+  }
+  window.addEventListener('resize', updateScale);
+  updateScale();
 
   // Initialize
   setState(1);
