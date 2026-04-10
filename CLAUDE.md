@@ -89,3 +89,9 @@ python3 -m http.server 8090
 ```
 
 Or configure `.claude/launch.json` (already set up) and use the preview server.
+
+## Deployment
+
+- **Live URL:** https://proj-skip-otp.vercel.app
+- **Hosting:** Vercel, connected to GitHub — every push to `main` auto-deploys
+- **Vercel project:** ar4ahmads-projects/proj-skip-otp
