@@ -19,7 +19,7 @@ This project is an **interactive prototype** of the station screen for developer
 
 ## Architecture
 
-State is managed via a `data-state="1|2|3"` attribute on `.iphone-frame`. All visual changes between states are driven purely by CSS descendant selectors (`[data-state="2"] .notification-banner { ... }`). JS is minimal (~10 lines) — just toggles the data attribute on button click.
+State is managed via a `data-state="1|2|3"` attribute on `.iphone-frame`. All visual changes between states are driven purely by CSS descendant selectors (`[data-state="2"] .notification-banner { ... }`). JS is minimal — toggles the data attribute on button click + a resize listener that scales the phone to fit the viewport via a `--phone-scale` CSS custom property on `.phone-wrapper`.
 
 ## 3 Screen States
 
@@ -71,8 +71,9 @@ File: `ekQkGLPpsC1RqPEO9mScsv` (In-app Checkout Flow — Skip OTP)
 - [x] 3-step tracker/timeline with icons, dots, connecting lines
 - [x] iOS notification banner with backdrop blur + slide animation
 - [x] Footer (phone number + consent text)
-- [x] 3 control buttons outside phone frame
+- [x] 3 control buttons to the left of phone frame, top-aligned
 - [x] All CSS transitions between states (notification slide, green cascade, footer reveal)
+- [x] Responsive layout — phone scales proportionally to fit viewport (height & width) via CSS custom property + JS resize listener
 
 ## What's NOT Built Yet
 
